@@ -1,4 +1,5 @@
 import json
+import os
 from typing import Any, Dict
 
 import requests
@@ -7,6 +8,17 @@ from chalice.app import SQSEvent
 from requests.models import Response
 
 app = Chalice(app_name='affiliategw-messaging-handler')
+
+
+sentry_dsn = os.environ.get('affiliategw_messaging_handler_sentry_dsn')
+if sentry_dsn:
+    import sentry_sdk
+    from sentry_sdk.integrations.aws_lambda import AwsLambdaIntegration
+    sentry_sdk.init(
+        dsn=sentry_dsn,
+        integrations=[AwsLambdaIntegration()]
+    )
+
 
 QUEUE: str = 'affiliategw-tune-queue'
 TARGET_URL: str = 'https://ncotflvio7.execute-api.eu-west-1.amazonaws.com/api/'
