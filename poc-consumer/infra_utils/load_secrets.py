@@ -13,7 +13,7 @@ def load_secret_file_from_s3(
     return secrets
 
 
-def update_config_file_from_s3_object(
+def update_config_file_with_secrets(
         path: str, secrets: Dict[str, Any]) -> None:
     with open(path, 'r+') as file_obj:
         file_contents: str = file_obj.read()
