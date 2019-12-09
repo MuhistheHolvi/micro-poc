@@ -12,10 +12,12 @@ CONFIG_FIXTURE = {"key": "value", "stages": {"dev": {"secret": "Hush"}}}
 SECRETS_FIXTURE = {"secret": "I like coke zero."}
 
 
-class LoadSecretFileFromS3Test(TestCase):
+class MotoHelper:
     @staticmethod
     def _setup_s3_file(bucket: str, file_name: str, contents: str) -> None:
-        """This function construct a mock s3 bucket and fills it with the data required
+        """
+        This function construct a mock s3 bucket and fills it with the data required. This
+        pattern is used by Moto library to mock aws functionality.
 
         Arguments:
             bucket {str} -- The name of the bucket. Must be AWS naming compatible.
@@ -27,6 +29,8 @@ class LoadSecretFileFromS3Test(TestCase):
         s3 = boto3.client('s3')
         s3.put_object(Bucket=bucket, Key=file_name, Body=contents)
 
+
+class LoadSecretFileFromS3Test(TestCase, MotoHelper):
     @mock_s3  # type: ignore
     def test_load_secret_file_from_s3(self) -> None:
         FIXTURE_FILE_CONTENTS = json.dumps(SECRETS_FIXTURE)
