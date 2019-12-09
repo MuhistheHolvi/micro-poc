@@ -1,0 +1,5 @@
+chalice
+moto
+mock
+boto3
+pip-tools
