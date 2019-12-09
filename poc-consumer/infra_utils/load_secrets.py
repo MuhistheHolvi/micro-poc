@@ -21,7 +21,12 @@ def update_config_file_with_secrets(
         config = update_conf_with_prod_env_key(
             config=config, secrets=secrets
         )
-        file_obj.write(json.dumps(config))
+        file_obj.seek(0)
+        prettified_config_json: str = json.dumps(
+            config, sort_keys=True, indent=4, separators=(',', ': ')
+        )
+        file_obj.write(prettified_config_json)
+        file_obj.truncate
 
 
 def update_conf_with_prod_env_key(

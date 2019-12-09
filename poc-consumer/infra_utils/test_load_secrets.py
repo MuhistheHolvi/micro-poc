@@ -53,18 +53,18 @@ class AppendSecretsToProdEnvVars(TestCase):
         with patch('builtins.open', mock_open(read_data=config)) as mock_open_file:
             update_config_file_with_secrets(path='not.a.path', secrets=SECRETS_FIXTURE)
         mock_open_file.assert_called_once_with('not.a.path', 'r+')
-        expected_written_config = '{"key": "value", "stages": {"dev": {"secret": "Hush"}, "prod": {"environment_variables": {"secret": "I like coke zero."}}}}'
+        expected_written_config = '{\n    "key": "value",\n    "stages": {\n        "dev": {\n            "secret": "Hush"\n        },\n        "prod": {\n            "environment_variables": {\n                "secret": "I like coke zero."\n            }\n        }\n    }\n}'
         mock_open_file.return_value.write.assert_called_once_with(expected_written_config)
 
     def test_with_mocked_updater_logic(self) -> None:
         config: str = json.dumps(CONFIG_FIXTURE)
         fixture_config_return = {"not.a.config": "No configs here"}
         with patch('builtins.open', mock_open(read_data=config)) as mock_open_file:
-            with patch('load_secrets.update_conf_with_prod_env_key', autospec=True) as mock_updater:
+            with patch('infra_utils.load_secrets.update_conf_with_prod_env_key', autospec=True) as mock_updater:
                 mock_updater.return_value = fixture_config_return
                 update_config_file_with_secrets(path='not.a.path', secrets=SECRETS_FIXTURE)
         mock_open_file.assert_called_once_with('not.a.path', 'r+')
-        expected_written_config = '{"not.a.config": "No configs here"}'
+        expected_written_config = '{\n    "not.a.config": "No configs here"\n}'
         mock_open_file.return_value.write.assert_called_once_with(expected_written_config)
 
 
