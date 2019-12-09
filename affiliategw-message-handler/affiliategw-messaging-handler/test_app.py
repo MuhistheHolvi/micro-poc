@@ -1,11 +1,12 @@
+from typing import Any, Dict
 from unittest import TestCase
-from mock import patch
-from typing import Dict, Any
-from app import handler, TARGET_URL, app
+
 from chalice.app import SQSEvent
-from requests_mock import Mocker
-from requests import Response
+from mock import patch
 from requests.exceptions import HTTPError
+from requests_mock import Mocker
+
+from app import handler
 
 
 class FakeLambdaContextIdentity(object):
