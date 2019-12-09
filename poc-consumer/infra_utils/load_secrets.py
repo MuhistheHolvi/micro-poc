@@ -1,7 +1,6 @@
 from typing import Dict, Any
 import boto3
 import json
-import os
 
 
 def load_secret_file_from_s3(
