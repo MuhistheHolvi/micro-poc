@@ -4,14 +4,6 @@ import json
 import os
 
 
-CURRENT_DIR_PATH = os.path.dirname(os.path.realpath(__file__))
-DEFAULT_CONF_PATH: str = os.path.join(
-    CURRENT_DIR_PATH, ".chalice", "config.json"
-)
-DEFAULT_BUCKET_NAME: str = 'holvi-lambdas'
-DEFAULT_CONF_FILE_NAME: str = 'settings.json'
-
-
 def load_secret_file_from_s3(
         bucket_name: str, file_name: str) -> Dict[str, Any]:
     s3 = boto3.resource('s3')
