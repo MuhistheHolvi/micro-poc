@@ -5,8 +5,8 @@ import json
 
 def load_secret_file_from_s3(
         bucket_name: str, file_name: str) -> Dict[str, Any]:
-    s3 = boto3.resource('s3')
-    obj = s3.Object(bucket_name, file_name)
+    s3_client = boto3.resource('s3')
+    obj = s3_client.Object(bucket_name, file_name)
     body: str = obj.get()['Body'].read()
     secrets: Dict[str, Any] = json.loads(body)
     return secrets
@@ -25,7 +25,7 @@ def update_config_file_with_secrets(
             config, sort_keys=True, indent=4, separators=(',', ': ')
         )
         file_obj.write(prettified_config_json)
-        file_obj.truncate
+        file_obj.truncate()
 
 
 def update_conf_with_prod_env_key(
